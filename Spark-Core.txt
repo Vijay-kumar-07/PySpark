@@ -96,3 +96,11 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 
 #SQL kind of syntax for filtering
 >>> empDF.filter("Department_id == 50 and salary <5000").select("Employee_id","salary","Department_id").show(10);
+
+#Find unique values
+>>> empDF.distinct().show();
+
+# Drop Duplicates
+>>> empDF.dropDuplicates().show();
+
+>>> empDF.dropDuplicates(["department_id","hire_date"]).select("Employee_id","Hire_date","department_id").show();
