@@ -83,3 +83,5 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 #Update existing column values:
 >>> empDF.withColumn("SALARY",col("SALARY") - 1000).select("EMPLOYEE_ID","FIRST_NAME","SALARY").show();
 
+#Renaming the existing column:
+>>> empDF.withColumnRenamed("SALARY","EMP_SALARY").show();
