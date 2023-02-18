@@ -43,3 +43,33 @@ root
  |-- DEPARTMENT_NAME: string (nullable = true)
  |-- MANAGER_ID: string (nullable = true)
  |-- LOCATION_ID: integer (nullable = true)
+ 
+ 
+>>> empDF = spark.read.option("header",True).option("inferSchema",True).csv("/input_data/employees.csv");
+>>> empDF.printSchema();
+root
+ |-- EMPLOYEE_ID: integer (nullable = true)
+ |-- FIRST_NAME: string (nullable = true)
+ |-- LAST_NAME: string (nullable = true)
+ |-- EMAIL: string (nullable = true)
+ |-- PHONE_NUMBER: string (nullable = true)
+ |-- HIRE_DATE: string (nullable = true)
+ |-- JOB_ID: string (nullable = true)
+ |-- SALARY: integer (nullable = true)
+ |-- COMMISSION_PCT: string (nullable = true)
+ |-- MANAGER_ID: string (nullable = true)
+ |-- DEPARTMENT_ID: integer (nullable = true)
+ 
+ empDF.select("*")
+ 
+ empDF.select("employee_id").show();
+ 
+ empDF.select(empDF.FIRST_NAME, empDF.EMPLOYEE_ID).show();
+ 
+ empDF.select(empDF["FIRST_NAME"], empDF.EMPLOYEE_ID).show();
+ 
+from pyspark.sql.functions import col
+
+empDF.select(col("EMPLOYEE_ID"), col("FIRST_NAME")).show();
+
+empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME")).show();
