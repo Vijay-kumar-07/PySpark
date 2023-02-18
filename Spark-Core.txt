@@ -85,3 +85,6 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 
 #Renaming the existing column:
 >>> empDF.withColumnRenamed("SALARY","EMP_SALARY").show();
+
+#Drop the column:
+>>> empDF.drop("COMMISSION_PCT").show();
