@@ -116,3 +116,7 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 >>> empDF.select(min("Salary").alias("min_salary")).show();
 
 
+>>> empDF.select("first_name","department_id","salary").orderBy("salary").show()
+
+>>> empDF.select("first_name","department_id","salary").orderBy(col("department_id").asc(),col("salary").desc()).show()
+
