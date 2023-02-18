@@ -104,3 +104,15 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 >>> empDF.dropDuplicates().show();
 
 >>> empDF.dropDuplicates(["department_id","hire_date"]).select("Employee_id","Hire_date","department_id").show();
+
+>>> from pyspark.sql.functions import *
+
+>>> empDF.count();
+
+>>> empDF.select(count("salary")).show()
+
+>>> empDF.select(max("Salary").alias("max_salary")).show();
+
+>>> empDF.select(min("Salary").alias("min_salary")).show();
+
+
