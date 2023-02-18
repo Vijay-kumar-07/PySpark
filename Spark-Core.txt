@@ -88,3 +88,11 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 
 #Drop the column:
 >>> empDF.drop("COMMISSION_PCT").show();
+
+#Filtering:
+>>> empDF.filter(col("salary") <5000).select("Employee_id","salary").show(10);
+
+>>> empDF.filter((col("Department_id") == 50) & (col("salary") <5000)).select("Employee_id","salary","Department_id").show(10);
+
+#SQL kind of syntax for filtering
+>>> empDF.filter("Department_id == 50 and salary <5000").select("Employee_id","salary","Department_id").show(10);
