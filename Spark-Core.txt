@@ -73,3 +73,13 @@ from pyspark.sql.functions import col
 empDF.select(col("EMPLOYEE_ID"), col("FIRST_NAME")).show();
 
 empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME")).show();
+
+>>> from pyspark.sql.functions import col, count
+>>> empDF.select(count("*")).show();
+
+#Derive New column:
+>>> empDF.withColumn("NEW_SALARY",col("SALARY") + 1000).select("EMPLOYEE_ID","FIRST_NAME","SALARY","NEW_SALARY").show();
+
+#Update existing column values:
+>>> empDF.withColumn("SALARY",col("SALARY") - 1000).select("EMPLOYEE_ID","FIRST_NAME","SALARY").show();
+
