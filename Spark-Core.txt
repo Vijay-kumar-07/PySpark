@@ -150,3 +150,13 @@ empDF.alias("emp1").join(empDF.alias("emp2"), col("emp1.MANAGER_ID") == col("emp
 empDF.alias("emp1").join(empDF.alias("emp2"), col("emp1.MANAGER_ID") == col("emp2.MANAGER_ID"), "inner").select(col("emp1.employee_id"), col("emp2.first_name")).dropDuplicates().show(100);
 
 
+empDF.join(DeptDf,(empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID) & (DeptDf.LOCATION_ID == 1700), "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME).show(100);
+
+location_data = [(1700,'INDIA'),(1800,'USA')]
+
+schema = StructType([StructField("LOCATION_ID", IntegerType(), True), StructField("LOCATION_NAME", StringType(), True)])
+
+locDF = spark.createDataFrame(data = location_data, schema = schema)
+
+empDF.join(DeptDf,(empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID) & (DeptDf.LOCATION_ID == 1700), "inner").join(locDF, DeptDf.LOCATION_ID == locDF.LOCATION_ID, "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME,locDF.LOCATION_NAME).show(100);
+
