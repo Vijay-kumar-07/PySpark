@@ -138,4 +138,15 @@ spark.sql("select * from employee").show();
 spark.sql("select employee_id, department_id, rank() over(partition by department_id order by salary desc) as rank_salary from employee").show()
 
 
+# JOINS:
+empDF.join(DeptDf,empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID, "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME).show();
+
+empDF.join(DeptDf,empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID, "left").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME).show(100);
+
+empDF.join(DeptDf,empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID, "fullouter").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME).show(100);
+
+empDF.alias("emp1").join(empDF.alias("emp2"), col("emp1.MANAGER_ID") == col("emp2.MANAGER_ID"), "inner").select(col("emp1.employee_id"), col("emp2.first_name")).show(100);
+
+empDF.alias("emp1").join(empDF.alias("emp2"), col("emp1.MANAGER_ID") == col("emp2.MANAGER_ID"), "inner").select(col("emp1.employee_id"), col("emp2.first_name")).dropDuplicates().show(100);
+
 
