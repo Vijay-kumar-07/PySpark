@@ -125,3 +125,9 @@ empDF.groupBy("department_id").sum("Salary").show();
 >>> empDF.groupBy("department_id").max("Salary").show();
 
 empDF.groupBy("department_id","job_id").sum("Salary","employee_id").show();
+
+empDF.groupBy("department_id").agg(sum("salary").alias("total_salary")).show()
+
+empDF.groupBy("department_id").agg(sum("salary").alias("Total_salary"),max("salary").alias("Max_Salary"),min("salary").alias("Min_Salary"),avg("salary").alias("Average_Salary")).where(col("Max_Salary") >= 10000).show()
+
+
