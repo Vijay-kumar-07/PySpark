@@ -176,3 +176,13 @@ empDF.select(col("EMPLOYEE_ID"), upperCaseUDF(col("FIRST_NAME")), upperCaseUDF(c
 ...     return out_str
 
 empDF.select(col("EMPLOYEE_ID"), uppercasenew(col("FIRST_NAME")), uppercasenew(col("LAST_NAME"))).show();
+
+>>> from pyspark.sql.window import Window
+>>> windowSpec = Window.partitionBy("DEPARTMENT_ID").orderBy(col("SALARY").desc())
+
+>>> empDF.withColumn("salary_rank", rank().over(windowSpec)).select("DEPARTMENT_ID", "SALARY","salary_rank").show();
+
+>>> empDF.withColumn("SUM", sum("SALARY").over(windowSpec)).select("DEPARTMENT_ID", "SALARY","SUM").show();
+
+>>> windowSpec = Window.partitionBy("DEPARTMENT_ID")
+>>> empDF.withColumn("SUM", sum("SALARY").over(windowSpec)).select("DEPARTMENT_ID", "SALARY","SUM").show();
