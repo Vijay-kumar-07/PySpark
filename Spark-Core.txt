@@ -120,3 +120,8 @@ empDF.select(col("EMPLOYEE_ID").alias("EMP_ID"), col("FIRST_NAME").alias("F_NAME
 
 >>> empDF.select("first_name","department_id","salary").orderBy(col("department_id").asc(),col("salary").desc()).show()
 
+empDF.groupBy("department_id").sum("Salary").show();
+
+>>> empDF.groupBy("department_id").max("Salary").show();
+
+empDF.groupBy("department_id","job_id").sum("Salary","employee_id").show();
