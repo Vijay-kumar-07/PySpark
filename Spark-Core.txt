@@ -131,5 +131,11 @@ empDF.groupBy("department_id").agg(sum("salary").alias("total_salary")).show()
 empDF.groupBy("department_id").agg(sum("salary").alias("Total_salary"),max("salary").alias("Max_Salary"),min("salary").alias("Min_Salary"),avg("salary").alias("Average_Salary")).where(col("Max_Salary") >= 10000).show()
 
 
+empDF.createOrReplaceTempView("employee")
+
+spark.sql("select * from employee").show();
+
+spark.sql("select employee_id, department_id, rank() over(partition by department_id order by salary desc) as rank_salary from employee").show()
+
 
 
