@@ -160,3 +160,19 @@ locDF = spark.createDataFrame(data = location_data, schema = schema)
 
 empDF.join(DeptDf,(empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID) & (DeptDf.LOCATION_ID == 1700), "inner").join(locDF, DeptDf.LOCATION_ID == locDF.LOCATION_ID, "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME,locDF.LOCATION_NAME).show(100);
 
+
+## UDF
+def uppercase(in_str):
+        out_str = in_str.upper()
+        return out_str
+        
+upperCaseUDF = udf(lambda z:uppercase(z), StringType())
+
+empDF.select(col("EMPLOYEE_ID"), upperCaseUDF(col("FIRST_NAME")), upperCaseUDF(col("LAST_NAME"))).show();
+
+@udf(returnType=StringType())
+... def uppercasenew(in_str):
+...     out_str = in_str.upper()
+...     return out_str
+
+empDF.select(col("EMPLOYEE_ID"), uppercasenew(col("FIRST_NAME")), uppercasenew(col("LAST_NAME"))).show();
