@@ -3,3 +3,6 @@ hadoop fs -ls /
 hadoop fs -mkdir /input_data
 
 hadoop fs -put departments.csv /input_data
+
+--> To remove the directory
+hadoop fs -rm -r /output
