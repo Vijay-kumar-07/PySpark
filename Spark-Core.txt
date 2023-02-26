@@ -186,3 +186,23 @@ empDF.select(col("EMPLOYEE_ID"), uppercasenew(col("FIRST_NAME")), uppercasenew(c
 
 >>> windowSpec = Window.partitionBy("DEPARTMENT_ID")
 >>> empDF.withColumn("SUM", sum("SALARY").over(windowSpec)).select("DEPARTMENT_ID", "SALARY","SUM").show();
+
+
+
+BROADCAST JOIN
+-------------------------------------------------
+
+from pyspark.sql.functions import *
+
+spark.conf.set("spark.sql.autoBroadcastJoinThreshold", 104857600) --> 104 MB (104857600 in bytes)
+
+spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1) for displaying the Broadcast Join
+
+empDF.join(broadcast(DeptDf),empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID, "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME).show();
+
+resultdf = empDF.join(broadcast(DeptDf),empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT_ID, "inner").select(empDF.EMPLOYEE_ID, empDF.DEPARTMENT_ID, DeptDf.DEPARTMENT_NAME)
+
+
+WRITE OPERATION
+--------------------------------------------------
+resultdf.write.option("header",True).csv("output/result")
