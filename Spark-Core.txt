@@ -206,3 +206,12 @@ resultdf = empDF.join(broadcast(DeptDf),empDF.DEPARTMENT_ID == DeptDf.DEPARTMENT
 WRITE OPERATION
 --------------------------------------------------
 resultdf.write.option("header",True).csv("output/result")
+
+--> To Overwrite the data - resultdf.write.mode("overwrite").option("header",True).csv("output/result")
+--> To append and also change the file format - resultdf.write.mode("append").option("header",True).format("json").save("output/result")
+
+
+PARTITION BY
+---------------------------------------------------
+
+resultdf.write.mode("overwrite").partitionBy('DEPARTMENT_ID').option("header",True).format("json").save("output/result")
