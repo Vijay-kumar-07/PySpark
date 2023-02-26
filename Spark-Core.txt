@@ -215,3 +215,70 @@ PARTITION BY
 ---------------------------------------------------
 
 resultdf.write.mode("overwrite").partitionBy('DEPARTMENT_ID').option("header",True).format("json").save("output/result")
+
+
+----> REPARTITION()
+>>> resultdf.rdd.getNumPartitions()
+1
+>>> newdf = resultdf.repartition(10)
+>>> newdf.rdd.getNumPartitions()
+10
+
+----> COALESCE()
+>>> df1 = newdf.coalesce(5)
+>>> df1.rdd.getNumPartitions()
+5
+>>> resultdf.write.mode("overwrite").option("header",True).csv("output/result")
+>>> resultdf.coalesce(1).write.mode("overwrite").option("header",True).csv("output/result")
+
+
+>>> jsondf = spark.read.json('/input/jsonexample.json')
+>>> jsondf.show();
++---------+----+---------+------+
+|    Array|Num1|    Text1| Text2|
++---------+----+---------+------+
+|[1, 2, 3]|   5|    HELLO|   Bye|
+|[4, 5, 6]|  50|  Hell66o| Bye22|
+|[7, 8, 3]| 500|Hello2244|Bye333|
++---------+----+---------+------+
+
+>>> jsondf.printSchema()
+root
+ |-- Array: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- Num1: long (nullable = true)
+ |-- Text1: string (nullable = true)
+ |-- Text2: string (nullable = true)
+
+>>> jsondf.select(jsondf.Text1, jsondf.Array).show()
++---------+---------+
+|    Text1|    Array|
++---------+---------+
+|    HELLO|[1, 2, 3]|
+|  Hell66o|[4, 5, 6]|
+|Hello2244|[7, 8, 3]|
++---------+---------+
+
+>>> jsondf.select(jsondf.Text1, jsondf.Array[1]).show()
++---------+--------+
+|    Text1|Array[1]|
++---------+--------+
+|    HELLO|       2|
+|  Hell66o|       5|
+|Hello2244|       8|
++---------+--------+
+
+>>> jsondf.select(jsondf.Text1, explode(jsondf.Array)).show()
++---------+---+
+|    Text1|col|
++---------+---+
+|    HELLO|  1|
+|    HELLO|  2|
+|    HELLO|  3|
+|  Hell66o|  4|
+|  Hell66o|  5|
+|  Hell66o|  6|
+|Hello2244|  7|
+|Hello2244|  8|
+|Hello2244|  3|
++---------+---+
